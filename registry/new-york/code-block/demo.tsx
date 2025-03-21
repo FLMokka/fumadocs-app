@@ -15,10 +15,7 @@ export default function CodeBlockDemo() {
 }
 
 // Code example
-const useGoogleAuthCode = `import * as QueryParams from "expo-auth-session/build/QueryParams";`
-
-// Code example
-const useGoogleAuthCode2 = `import * as QueryParams from "expo-auth-session/build/QueryParams";
+const useGoogleAuthCode = `import * as QueryParams from "expo-auth-session/build/QueryParams";
 
 import { useState } from "react";
 
