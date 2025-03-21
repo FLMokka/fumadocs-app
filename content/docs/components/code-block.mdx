@@ -1,19 +1,55 @@
 ---
 title: Code Block
-description: A collapsible component for displaying a formatted code block with syntax highlighting
+description: A configurable component for displaying a formatted code block with syntax highlighting
 ---
 
-import { ComponentInstall } from "@/components/component-install";
+import ComponentInstall from "@/components/component-install";
+import { ObjectTable } from "@/registry/new-york/code-block/references";
+import CodeBlockDemo from "@/registry/new-york/code-block/demo";
 
 ## Installation
 <ComponentInstall name="code-block" />
 
+## References
+<ObjectTable />
 
-## Usage
+## Usage & Examples
 
+1. ### With Title (Collapsed by Default, Collapsible)
+Creates a collapsible code block that starts in the collapsed state, shows a header with title and collapse functionality.
 
-import CodeBlockDemo from "@/registry/new-york/code-block/demo";
+```tsx
+import { CodeBlock } from "@/components/ui/code-block";
 
-## Example
-<CodeBlockDemo />
+<CodeBlock
+  code={exampleCode}
+  title="useGoogleAuth.ts"
+  colorScheme={theme === "dark" ? "dark" : "light"}
+/>
+```
 
+<CodeBlockDemo caseNumber={1} />
+
+2. ### With Title (Expanded by Default, Collapsible)
+When no title is provided, creates a collapsible code block that starts expanded setting <code>defaultOpen</code> to <code>true</code>, shows a header with title and collapse functionality.
+
+```tsx
+<CodeBlock
+  code={exampleCode}
+  title="Supabase OAuth Sign-in"
+  defaultOpen
+/>
+```
+
+<CodeBlockDemo caseNumber={2} />
+
+3. ### Without Title (Always Expanded)
+Creates a simple code block that is always visible, no collapse functionality.
+
+```tsx
+<CodeBlock
+  code={exampleCode}
+/>
+```
+
+<CodeBlockDemo caseNumber={3} />

@@ -10,8 +10,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/
 
 export interface CodeBlockProps {
   code: string;
-  title: string;
+  title?: string; // optional
   language?: string;
+  defaultOpen?: boolean; // accordion state
   colorScheme?: "light" | "dark";
   className?: string;
 }
@@ -21,10 +22,17 @@ export function CodeBlock({
   title,
   language = "tsx",
   colorScheme = "light",
+  defaultOpen = false, // Default to false
   className,
   ...props
 }: CodeBlockProps) {
   const theme = useMemo(() => (colorScheme === "dark" ? themes.oneDark : themes.oneLight), [colorScheme]);
+
+  // If no title is provided, content is always visible
+  const showHeader = Boolean(title);
+  // Default value of the accordion based on title presence and defaultOpen prop
+  const defaultValue = !showHeader || defaultOpen ? "code" : undefined;
+
   return (
     <div
       className={cn(
@@ -32,16 +40,23 @@ export function CodeBlock({
         className
       )}
       {...props}>
-      <Accordion type="single" collapsible className="w-full">
+      <Accordion
+        type="single"
+        collapsible={showHeader} // Only collapsible when title exists
+        defaultValue={defaultValue}
+        className="w-full"
+      >
         <AccordionItem value="code">
-          <div className="flex flex-row items-center justify-between bg-muted px-4 py-1">
-            <div className="flex items-center gap-3">
-              {language.toLowerCase() === "tsx" && <TypeScriptIcon />}
-              <span className="text-muted-foreground">{title}</span>
+          {showHeader &&
+            <div className="flex flex-row items-center justify-between bg-muted px-4 py-1">
+              <div className="flex items-center gap-4">
+                {language.toLowerCase() === "tsx" && <TypeScriptIcon />}
+                <span className="text-muted-foreground">{title || language}</span>
+              </div>
+              <AccordionTrigger />
             </div>
-            <AccordionTrigger />
-          </div>
-          <AccordionContent className="w-full pb-0">
+          }
+          <AccordionContent forceMount={!showHeader ? true : undefined} className="w-full pb-0">
             <PrimitiveCodeBlock code={code} language={language} theme={theme}>
               <PrimitiveCodeBlock.Code
                 className="m-0 p-4 overflow-auto leading-relaxed"
@@ -63,7 +78,7 @@ export function CodeBlock({
   );
 }
 
-// TypeScript icon component
+// TypeScriptIcon component remains the same
 export const TypeScriptIcon: React.FC = () => (
   <svg fill="none" height="14" viewBox="0 0 512 512" width="14" xmlns="http://www.w3.org/2000/svg">
     <rect fill="#666666" height="512" rx="50" width="512" />

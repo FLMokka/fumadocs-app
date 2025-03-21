@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { CodeBlock, Pre } from "fumadocs-ui/components/codeblock";
 import { Check, Copy } from "lucide-react";
-import React, { useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 const packageManagers = [
   { name: "npm", command: "npx" },
@@ -20,7 +20,7 @@ const packageManagers = [
 
 const APP_URL = "https://againui.com";
 
-export function ComponentInstall({ name }: { name: string }) {
+export default function ComponentInstall({ name }: { name: string }) {
   const [copied, setCopied] = useState<boolean>(false);
   const [selectedPM, setSelectedPM] = useState(packageManagers[0]);
   const componentURL = `${APP_URL}/r/${name}.json`;
@@ -45,9 +45,9 @@ export function ComponentInstall({ name }: { name: string }) {
             className="absolute right-3 top-1/2 -translate-y-1/2 h-7 w-7"
             title={copied ? "Copied!" : "Copy to clipboard"}
           >
-            {copied ? 
+            {copied ?
               <Check className="h-4 w-4" />
-             : 
+              :
               <Copy className="h-4 w-4" />
             }
           </Button>

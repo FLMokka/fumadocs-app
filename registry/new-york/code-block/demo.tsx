@@ -3,15 +3,38 @@
 import { CodeBlock } from "@/registry/new-york/code-block/components/code-block";
 import { useTheme } from "next-themes";
 
-export default function CodeBlockDemo() {
+export default function CodeBlockDemo({ caseNumber }: { caseNumber: number }) {
   const { theme } = useTheme();
-  return (
-    <CodeBlock
-      code={useGoogleAuthCode}
-      title="useGoogleAuth"
-      colorScheme={theme === "dark" ? "dark" : "light"}
-    />
-  );
+  const colorScheme = theme === "dark" ? "dark" : "light";
+
+  switch (caseNumber) {
+    case 1:
+      return (
+        <CodeBlock
+          code={useGoogleAuthCode}
+          title="useGoogleAuth.ts"
+          colorScheme={colorScheme}
+        />
+      );
+    case 2:
+      return (
+        <CodeBlock
+          code={useGoogleAuthCodeSnippet}
+          title="Supabase OAuth Sign-in"
+          colorScheme={colorScheme}
+          defaultOpen
+        />
+      );
+    case 3:
+      return (
+        <CodeBlock
+          code={useGoogleAuthCodeSnippet}
+          colorScheme={colorScheme}
+        />
+      );
+    default:
+      return null;
+  }
 }
 
 // Code example
@@ -111,4 +134,16 @@ export default function useGoogleAuth() {
     error: state.error,
   };
 }
+`;
+
+const useGoogleAuthCodeSnippet = `const { data, error } = await supabase.auth.signInWithOAuth({
+  provider: "google",
+  options: {
+    redirectTo: Linking.createURL("/"),
+    skipBrowserRedirect: true,
+    queryParams: {
+      prompt: "select_account",
+    },
+  },
+});
 `;
